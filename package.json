@@ -1,0 +1,30 @@
+{
+  "name": "bb-bug-tracker-api",
+  "version": "1.0.0",
+  "description": "Practice rest api for  bug tracking",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mlabastida/BB-Bug-Tracker-Api.git"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "bug",
+    "tracker",
+    "practice"
+  ],
+  "author": "Manuel Labastida",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mlabastida/BB-Bug-Tracker-Api/issues"
+  },
+  "homepage": "https://github.com/mlabastida/BB-Bug-Tracker-Api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.3"
+  }
+}
