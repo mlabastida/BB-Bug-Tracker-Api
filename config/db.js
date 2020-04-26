@@ -21,7 +21,7 @@ const config = {
   },
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/development_db',
+    connection: process.env.POSTGRES_DEV_URI,
     migrations: {
       directory: __dirname + '/db/migrations',
     },
@@ -41,10 +41,12 @@ const config = {
   },
 };
 
-const connectDB = require('knex')({
-  client: 'pg',
-  connection: process.env.POSTGRES_URI,
-  searchPath: ['knex', 'public'],
-});
+const connectDB = require('knex')(config.development);
+
+// const connectDB = require('knex')({
+//   client: 'pg',
+//   connection: process.env.POSTGRES_URI,
+//   searchPath: ['knex', 'public'],
+// });
 
 module.exports = connectDB;
