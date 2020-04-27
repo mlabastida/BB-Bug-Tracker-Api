@@ -17,6 +17,8 @@ exports.getBugs = asyncHandler(async (req, res, next) => {
     delete reqQuery[param];
   });
 
+  query = Bug.query().where(reqQuery);
+
   // Getting dates range
   const from_date = req.query.from
     ? new Date(req.query.from).toISOString()
@@ -28,20 +30,50 @@ exports.getBugs = asyncHandler(async (req, res, next) => {
       ).toISOString()
     : new Date().toISOString();
 
-  query.whereBetween('created', [from_date, to_date]);
+  query = query.whereBetween('created', [from_date, to_date]);
 
   // Getting fields to show
   if (req.query.select) {
     const select = req.query.select.split(',');
     select.unshift('id');
-    query.select(select);
+    query = query.select(select);
   }
 
-  //Order
-  if (req.query.orderBy) query.orderBy(req.query.orderBy.split(','));
+  // Order
+  if (req.query.orderBy) query = query.orderBy(req.query.orderBy.split(','));
 
-  const bugs = await Bug.query().where(reqQuery).query;
-  res.status(200).json({ success: true, count: bugs.length, data: bugs });
+  // Pagination
+  const page = parseInt(req.query.page, 10) - 1 || 0;
+  const limit = parseInt(req.query.limit, 10) || 25;
+
+  query = query.page(page, limit);
+
+  // Run query
+  const bugs = await query;
+
+  // Pagination result
+  const pagination = {};
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit + bugs.results.length;
+
+  if (endIndex < bugs.total) {
+    pagination.next = { page: page + 2, limit };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = { page: page - 1, limit };
+  }
+
+  if (!bugs.results.length) {
+    return next(new ErrorResponse(`Bugs not found at page ${page}`, 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    count: bugs.results.length,
+    pagination: pagination,
+    data: bugs.results,
+  });
 });
 
 // @desc    Get single bugs
