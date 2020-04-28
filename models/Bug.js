@@ -1,6 +1,7 @@
 const { Model } = require('objection');
 const db = require('../config/db');
 const slugify = require('slugify');
+const Media = require('./Media');
 
 Model.knex(db);
 
@@ -12,6 +13,17 @@ class Bug extends Model {
   static get tableName() {
     return 'bug';
   }
+
+  static relationMappings = {
+    Media: {
+      relation: Model.HasManyRelation,
+      modelClass: Media,
+      join: {
+        from: 'bug.id',
+        to: 'media.bug_id',
+      }
+    }
+  };
 
   $beforeInsert() {
     this.created = new Date().toISOString();

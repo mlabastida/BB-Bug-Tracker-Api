@@ -36,20 +36,21 @@ exports.getBugs = asyncHandler(async (req, res, next) => {
   if (req.query.select) {
     const select = req.query.select.split(',');
     select.unshift('id');
-    query = query.select(select);
-  }
+    query = query.select(select, Bug.relatedQuery('media').as('media'));
+  } 
 
   // Order
   if (req.query.orderBy) query = query.orderBy(req.query.orderBy.split(','));
 
   // Pagination
-  const page = parseInt(req.query.page, 10) - 1 || 0;
+  const page = parseInt(req.query.page, 10) || 1;
   const limit = parseInt(req.query.limit, 10) || 25;
 
-  query = query.page(page, limit);
+  query = query.page(page - 1, limit);
 
   // Run query
-  const bugs = await query;
+  const bugs = await query.withGraphFetched('Media');
+  console.log(bugs);
 
   // Pagination result
   const pagination = {};
@@ -57,7 +58,7 @@ exports.getBugs = asyncHandler(async (req, res, next) => {
   const endIndex = page * limit + bugs.results.length;
 
   if (endIndex < bugs.total) {
-    pagination.next = { page: page + 2, limit };
+    pagination.next = { page: page + 1, limit };
   }
 
   if (startIndex > 0) {
