@@ -15,6 +15,7 @@ connectDB();
 
 //  Route files
 const bugs = require('./routes/bugs.js');
+const media = require('./routes/media.js');
 
 const app = express();
 
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 // Mount routers
 app.use('/api/v1/bugs', bugs);
+app.use('/api/v1/media', media);
 
 //
 app.use(errorHandler);

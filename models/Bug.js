@@ -21,8 +21,8 @@ class Bug extends Model {
       join: {
         from: 'bug.id',
         to: 'media.bug_id',
-      }
-    }
+      },
+    },
   };
 
   $beforeInsert() {
