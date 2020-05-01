@@ -37,7 +37,7 @@ exports.getBugs = asyncHandler(async (req, res, next) => {
     const select = req.query.select.split(',');
     select.unshift('id');
     query = query.select(select, Bug.relatedQuery('media').as('media'));
-  } 
+  }
 
   // Order
   if (req.query.orderBy) query = query.orderBy(req.query.orderBy.split(','));
