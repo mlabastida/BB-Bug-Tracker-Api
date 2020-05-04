@@ -1,4 +1,6 @@
 const express = require('express');
+const { protect } = require('../middleware/auth');
+
 const {
   getBugs,
   getBug,
@@ -13,8 +15,15 @@ const advancedResults = require('../middleware/advancedResults');
 
 const router = express.Router();
 
-router.route('/').get(advancedResults(Bug, 'Media'), getBugs).post(createBug);
+router
+  .route('/')
+  .get(protect, advancedResults(Bug, 'Media'), getBugs)
+  .post(protect, createBug);
 
-router.route('/:id').get(getBug).put(updateBug).delete(deleteBug);
+router
+  .route('/:id')
+  .get(protect, getBug)
+  .put(protect, updateBug)
+  .delete(protect, deleteBug);
 
 module.exports = router;
