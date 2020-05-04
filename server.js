@@ -18,6 +18,7 @@ connectDB();
 //  Route files
 const bugs = require('./routes/bugs.js');
 const media = require('./routes/media.js');
+const auth = require('./routes/auth.js');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Mount routers
 app.use('/api/v1/bugs', bugs);
 app.use('/api/v1/media', media);
+app.use('/api/v1/auth', auth);
 
 //
 app.use(errorHandler);

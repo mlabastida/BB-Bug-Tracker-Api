@@ -1,13 +1,3 @@
-/*
-const { Client } = require('pg');
-var client = new Client(process.env.POSTGRES_URI);
-
-const connectDBs = async () => {
-  const conn = await client.connect();
-  console.log(`PostgreSQL Connected: ${client.host}`.cyan.underline.bold);
-};
-*/
-
 const config = {
   test: {
     client: 'pg',
@@ -42,11 +32,5 @@ const config = {
 };
 
 const connectDB = require('knex')(config.development);
-
-// const connectDB = require('knex')({
-//   client: 'pg',
-//   connection: process.env.POSTGRES_URI,
-//   searchPath: ['knex', 'public'],
-// });
 
 module.exports = connectDB;

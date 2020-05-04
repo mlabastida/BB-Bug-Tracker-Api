@@ -39,28 +39,8 @@ class Bug extends Model {
     return this.$beforeSave(true);
   }
 
-  /*static get jsonSchema() {
-    return {
-      type: 'object',
-      required: ['title', 'description'],
-
-      properties: {
-        id: { type: 'integer' },
-        priority: { type: 'integer', default: 1 },
-        status: { type: 'integer', default: 0 },
-        created: { type: 'string', format: 'date-time', readOnly: true },
-        fixed: { type: 'string', format: 'date-time' },
-        title: { type: 'string', minLength: 1 },
-        description: { type: 'string', minLength: 1 },
-        comments: { type: 'string' },
-      },
-    };
-  }*/
-
   $beforeSave(inserting) {
     return this.searchSlug();
-
-    //while (typeof test === 'object' && test.id);
   }
 
   async searchSlug(index) {
